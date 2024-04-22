@@ -1,4 +1,4 @@
-import { debug, getInput, setFailed, type InputOptions } from '@actions/core'
+import { debug, info, getInput, setFailed, type InputOptions } from '@actions/core'
 import {
   GITHUB_COM_API_URL,
   GITHUB_COM_SERVER_URL,
@@ -24,6 +24,7 @@ export const internalActionVariables = {
 
 export async function run (): Promise<void> {
   try {
+    info('This is a tagged version')
     const actionCfg = await getActionConfig({ required: false })
     await preparePiperBinary(actionCfg)
 

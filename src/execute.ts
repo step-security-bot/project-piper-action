@@ -12,8 +12,6 @@ export interface piperExecResult {
 export async function executePiper (
   stepName: string, flags?: string[], ignoreDefaults?: boolean, execOptions?: ExecOptions
 ): Promise<piperExecResult> {
-
-  debug('This is a tagged version')
   let piperOutput = ''
   let piperError = ''
   let options = {
