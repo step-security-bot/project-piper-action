@@ -1,6 +1,7 @@
 import { exec, type ExecOptions } from '@actions/exec'
 import path from 'path'
 import { internalActionVariables } from './piper'
+import { debug } from "@actions/core";
 
 export interface piperExecResult {
   output: string
@@ -11,6 +12,8 @@ export interface piperExecResult {
 export async function executePiper (
   stepName: string, flags?: string[], ignoreDefaults?: boolean, execOptions?: ExecOptions
 ): Promise<piperExecResult> {
+
+  debug('This is a tagged version')
   let piperOutput = ''
   let piperError = ''
   let options = {
