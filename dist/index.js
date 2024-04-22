@@ -20178,6 +20178,7 @@ exports.internalActionVariables = {
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            (0, core_1.info)('This is a tagged version');
             const actionCfg = yield getActionConfig({ required: false });
             yield preparePiperBinary(actionCfg);
             yield (0, pipelineEnv_1.loadPipelineEnv)();
