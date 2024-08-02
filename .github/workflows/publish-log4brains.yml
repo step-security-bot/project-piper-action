@@ -9,17 +9,27 @@ on:
       - 'docs/adr/**'
       - '.github/workflows/publish-log4brains.yml'
       - '.log4brains.yml'
+permissions:
+  contents: read
+
 jobs:
   build-and-publish:
+    permissions:
+      contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
     runs-on: ubuntu-latest
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0
+        with:
+          egress-policy: audit
+
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           persist-credentials: false  # required by JamesIves/github-pages-deploy-action
           fetch-depth: 0  # required by Log4brains to work correctly (needs the whole Git history)
       - name: Install Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@1a4442cacd436585916779262731d5b162bc6ec7 # v3.8.2
         with:
           node-version: 16
       - name: Install and Build Log4brains
@@ -27,7 +37,7 @@ jobs:
           npm install --global log4brains
           log4brains build --basePath /${GITHUB_REPOSITORY}
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@94f3c658273cf92fb48ef99e5fbc02bd2dc642b2 # v4.6.3
         with:
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages

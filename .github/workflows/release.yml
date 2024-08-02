@@ -12,7 +12,12 @@ jobs:
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run || steps.manual_trigger.outputs.should_run  }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Get tags
         run: git fetch --tags --prune --unshallow
@@ -44,17 +49,22 @@ jobs:
     if: ${{ needs.check_if_should_run.outputs.should_run == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Increment version
         id: version
-        uses: reecetech/version-increment@2024.4.4
+        uses: reecetech/version-increment@c1faa9d742816594f71cad10fb5fda144d56eafc # 2024.4.4
         with:
           scheme: semver
           increment: minor
 
       - name: Create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
         with:
           tag_name: ${{ steps.version.outputs.v-version }}
           generate_release_notes: true
